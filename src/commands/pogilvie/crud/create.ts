@@ -1,6 +1,6 @@
 import { flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
-import  json2object  from '../../json2object'
+import  json2object  from '../../../json2object'
 
 
 export default class Create extends SfdxCommand {
