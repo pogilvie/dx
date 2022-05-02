@@ -1,72 +1,69 @@
 import { flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
-import * as fs from 'fs'
+import * as fs from 'fs';
 const columnify = require('columnify');
 
 function isA(x) {
   if (x && typeof x == 'object') {
     if (x['records']) {
-      return 'query'
+      return 'query';
     } else {
-      return 'object'
+      return 'object';
     }
   } else {
-    return 'simple'
+    return 'simple';
   }
 }
 
 function simplify(record) {
-  const r = {}
-  
+  const r = {};
+
   for (let property in record) {
     if (property == 'attributes') {
-      continue
+      continue;
     } else if (isA(record[property]) == 'object') {
-      r[property] = simplify(record[property])
+      r[property] = simplify(record[property]);
     } else if (isA(record[property]) == 'query') {
-      r[property] = simplifyQuery(record[property])
-    } 
-    else {
-      r[property] = record[property]
+      r[property] = simplifyQuery(record[property]);
+    } else {
+      r[property] = record[property];
     }
   }
-  return r
+  return r;
 }
 
 function simplifyQuery(query) {
-  const rows = []
+  const rows = [];
 
-  query.records.forEach(record => {
-    rows.push(simplify(record))
-  })
-  return rows
+  query.records.forEach((record) => {
+    rows.push(simplify(record));
+  });
+  return rows;
 }
 
 function flatten(parent, obj) {
-  const flattened = {}
-  
+  const flattened = {};
+
   Object.keys(obj).forEach((key) => {
-    let path = parent ? parent + '.' + key : key
+    let path = parent ? parent + '.' + key : key;
     if (typeof obj[key] === 'object' && obj[key] !== null) {
       if (Array.isArray(obj[key])) {
-        flattened[path] = JSON.stringify(obj[key], null, 2).replace('[', '').replace(']','')
+        flattened[path] = JSON.stringify(obj[key], null, 2).replace('[', '').replace(']', '');
       } else {
-        Object.assign(flattened, flatten(path, obj[key]))
+        Object.assign(flattened, flatten(path, obj[key]));
       }
     } else {
-      flattened[path] = obj[key]
+      flattened[path] = obj[key];
     }
-  })
+  });
 
-  return flattened
+  return flattened;
 }
 
-
 export default class Soql extends SfdxCommand {
-
   protected static requiresUsername = true;
   protected static requiresProject = false;
-  public static description = 'Issue soql query from a file'
+  public static description = 'Issue soql query from a file';
   public static examples = [
     `$ sfdx query:soql  -f ./accounts.soql -u my-org-alias
 
@@ -80,37 +77,36 @@ export default class Soql extends SfdxCommand {
     001S000001LGtY3IAL Sara Account
     001S000001LGdorIAD Sara Account
     001S000001LGdowIAD Sara Account
-    `
-  ]
+    `,
+  ];
 
   protected static flagsConfig = {
     file: flags.filepath({
       required: true,
-      char: 'f', 
-      description: 'soql file'
-    })
+      char: 'f',
+      description: 'soql file',
+    }),
   };
 
   public async run(): Promise<AnyJson> {
-
-    console.log('query version 1.0')
+    console.log('query version 1.0');
     const c = this.org.getConnection();
-    const result = await c.query(this.file2query(this.flags.file))
+    const result = await c.query(this.file2query(this.flags.file));
 
-    const simpleRows = simplifyQuery(result)
-    
-    const rows = []
-    simpleRows.forEach(r => {
-      rows.push(flatten(null, r))
-    })
+    const simpleRows = simplifyQuery(result);
 
-    console.log(columnify(rows, { preserveNewLines: true }))
+    const rows = [];
+    simpleRows.forEach((r) => {
+      rows.push(flatten(null, r));
+    });
 
-    return <AnyJson><unknown>result
+    console.log(columnify(rows, { preserveNewLines: true }));
+
+    return <AnyJson>(<unknown>result);
   }
 
-  file2query(filePath: string) : string {
-    const soql :string = fs.readFileSync(filePath, 'utf8')
-    return soql.replace('\n', ' ')
+  file2query(filePath: string): string {
+    const soql: string = fs.readFileSync(filePath, 'utf8');
+    return soql.replace('\n', ' ');
   }
 }
