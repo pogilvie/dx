@@ -1,22 +1,21 @@
 import { flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
-import PQueue from 'p-queue'
+import PQueue from 'p-queue';
 
-function *example() : Generator<any> {
-  let count = 0
+function* example(): Generator<any> {
+  let count = 0;
   while (1) {
     yield {
-      msg: "Hello, World!",
-      value: count++
-    }
+      msg: 'Hello, World!',
+      value: count++,
+    };
   }
 }
 
 export default class Run extends SfdxCommand {
-
   protected static requiresUsername = true;
   protected static requiresProject = false;
-  public static description = 'Test performance / correctness of a apex rest endpoint'
+  public static description = 'Test performance / correctness of a apex rest endpoint';
   public static examples = [ ]
   protected static flagsConfig = { 
     endpoint: flags.string( { char: 'e', description: 'API name of sobject', required: true } ),
@@ -48,6 +47,7 @@ export default class Run extends SfdxCommand {
         console.log(`start ${i}`)
         const start = Date.now()
         try {
+          // @ts-ignore
           const result = await c.apex.post(this.flags.endpoint, iterator.next().value)
           successes += 1
         } catch (e) {
