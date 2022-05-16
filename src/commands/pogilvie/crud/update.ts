@@ -1,6 +1,13 @@
 import { flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import json2object from '../../../json2object';
+import { RecordResult } from '../../../../node_modules/@types/jsforce/record-result';
+
+function createPayload(result: RecordResult): AnyJson {
+  return {
+    success: result.success,
+  };
+}
 
 export default class Update extends SfdxCommand {
   public static examples = [
@@ -33,10 +40,10 @@ export default class Update extends SfdxCommand {
 
     const c = this.org.getConnection();
     const o = json2object(this.flags.file);
-    const result = (await c.sobject(this.flags.sobject).update(o)) as AnyJson;
+    const result = await c.sobject(this.flags.sobject).update(o);
 
     console.log(result);
 
-    return result;
+    return createPayload(result);
   }
 }

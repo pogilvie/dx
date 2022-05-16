@@ -2,6 +2,7 @@ import { flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import PQueue from 'p-queue';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function* example(): Generator<any> {
   let count = 0;
   while (1) {
@@ -13,10 +14,10 @@ function* example(): Generator<any> {
 }
 
 export default class Run extends SfdxCommand {
-  protected static requiresUsername = true;
-  protected static requiresProject = false;
   public static description = 'Test performance / correctness of a apex rest endpoint';
   public static examples = [];
+  protected static requiresUsername = true;
+  protected static requiresProject = false;
   protected static flagsConfig = {
     endpoint: flags.string({ char: 'e', description: 'API name of sobject', required: true }),
     iterations: flags.integer({ char: 'i', description: 'iterations', default: 5 }),
@@ -24,6 +25,7 @@ export default class Run extends SfdxCommand {
     concurrency: flags.integer({ char: 'c', description: 'number of requests per interval', default: 5 }),
   };
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async run(): Promise<AnyJson> {
     console.log(this.flags);
 

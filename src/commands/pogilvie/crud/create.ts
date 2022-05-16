@@ -1,6 +1,13 @@
 import { flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import json2object from '../../../json2object';
+import { RecordResult } from '../../../../node_modules/@types/jsforce/record-result';
+
+function createPayload(result: RecordResult): AnyJson {
+  return {
+    success: result.success,
+  };
+}
 
 export default class Create extends SfdxCommand {
   public static description = 'Insert a record useing REST from a JSON file';
@@ -41,9 +48,7 @@ export default class Create extends SfdxCommand {
     const result = await c.sobject(this.flags.sobject).create(o);
 
     console.log(result);
-
-    const payload: RecordResult = result;
-
-    return (<unknown>result) as AnyJson;
+    const payload: AnyJson = createPayload(result);
+    return payload;
   }
 }
