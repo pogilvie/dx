@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/consistent-type-assertions */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import PQueue from 'p-queue';
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function* example(): Generator<any> {
   let count = 0;
@@ -40,11 +44,11 @@ export default class Run extends SfdxCommand {
 
     console.log('Hello, World!');
 
-    let min = 1000000000,
-      max = 0,
-      total = 0,
-      successes = 0,
-      failures = 0;
+    let min = 1000000000;
+    let max = 0;
+    let total = 0;
+    let successes = 0;
+    let failures = 0;
 
     const c = this.org.getConnection();
 

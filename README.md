@@ -31,8 +31,10 @@ USAGE
 * [`sfdx pogilvie:crud:delete -s <string> -i <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilviecruddelete--s-string--i-string--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx pogilvie:crud:read -s <string> -i <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilviecrudread--s-string--i-string--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx pogilvie:crud:update -s <string> -f <filepath> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilviecrudupdate--s-string--f-filepath--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx pogilvie:describe:relationships -s <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilviedescriberelationships--s-string--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx pogilvie:event:subscribe -e <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilvieeventsubscribe--e-string--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
-* [`sfdx pogilvie:org [-n <string>] [-f] [-v <string>] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilvieorg--n-string--f--v-string--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx pogilvie:gen:run -e <string> [-i <integer>] [-t <integer>] [-c <integer>] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilviegenrun--e-string--i-integer--t-integer--c-integer--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx pogilvie:query:soql -f <filepath> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilviequerysoql--f-filepath--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx pogilvie:ui:call -s <string> -r <string> -p <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-pogilvieuicall--s-string--r-string--p-string--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
 ## `sfdx pogilvie:apexrest:post -e <string> -f <filepath> [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
@@ -213,8 +215,6 @@ _See code: [src/commands/pogilvie/crud/read.ts](https://github.com/pogilvie/dx/b
 
 ## `sfdx pogilvie:crud:update -s <string> -f <filepath> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
-Update a record using REST from a JSON file
-
 ```
 USAGE
   $ sfdx pogilvie:crud:update -s <string> -f <filepath> [-u <string>] [--apiversion <string>] [--json] [--loglevel 
@@ -248,6 +248,36 @@ EXAMPLE
 
 _See code: [src/commands/pogilvie/crud/update.ts](https://github.com/pogilvie/dx/blob/v0.0.1/src/commands/pogilvie/crud/update.ts)_
 
+## `sfdx pogilvie:describe:relationships -s <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+List relationships defined for an sobject
+
+```
+USAGE
+  $ sfdx pogilvie:describe:relationships -s <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel 
+  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+
+OPTIONS
+  -s, --sobject=sobject                                                             (required) sobject type Account,
+                                                                                    CustomObject__c, ...
+
+  -u, --targetusername=targetusername                                               username or alias for the target
+                                                                                    org; overrides default target org
+
+  --apiversion=apiversion                                                           override the api version used for
+                                                                                    api requests made by this command
+
+  --json                                                                            format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
+
+EXAMPLE
+  $ sfdx desribe:relationships -s Account -u my-org-alias
+```
+
+_See code: [src/commands/pogilvie/describe/relationships.ts](https://github.com/pogilvie/dx/blob/v0.0.1/src/commands/pogilvie/describe/relationships.ts)_
+
 ## `sfdx pogilvie:event:subscribe -e <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 Subscribe to a platform event channel
@@ -277,24 +307,54 @@ EXAMPLE
 
 _See code: [src/commands/pogilvie/event/subscribe.ts](https://github.com/pogilvie/dx/blob/v0.0.1/src/commands/pogilvie/event/subscribe.ts)_
 
-## `sfdx pogilvie:org [-n <string>] [-f] [-v <string>] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+## `sfdx pogilvie:gen:run -e <string> [-i <integer>] [-t <integer>] [-c <integer>] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
-print a greeting and your org IDs
+Test performance / correctness of a apex rest endpoint
 
 ```
 USAGE
-  $ sfdx pogilvie:org [-n <string>] [-f] [-v <string>] [-u <string>] [--apiversion <string>] [--json] [--loglevel 
-  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+  $ sfdx pogilvie:gen:run -e <string> [-i <integer>] [-t <integer>] [-c <integer>] [-u <string>] [--apiversion <string>]
+   [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -f, --force                                                                       example boolean flag
-  -n, --name=name                                                                   name to print
+  -c, --concurrency=concurrency                                                     [default: 5] number of requests per
+                                                                                    interval
+
+  -e, --endpoint=endpoint                                                           (required) API name of sobject
+
+  -i, --iterations=iterations                                                       [default: 5] iterations
+
+  -t, --interval=interval                                                           [default: 1000] interval time in
+                                                                                    msec
 
   -u, --targetusername=targetusername                                               username or alias for the target
                                                                                     org; overrides default target org
 
-  -v, --targetdevhubusername=targetdevhubusername                                   username or alias for the dev hub
-                                                                                    org; overrides default dev hub org
+  --apiversion=apiversion                                                           override the api version used for
+                                                                                    api requests made by this command
+
+  --json                                                                            format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
+```
+
+_See code: [src/commands/pogilvie/gen/run.ts](https://github.com/pogilvie/dx/blob/v0.0.1/src/commands/pogilvie/gen/run.ts)_
+
+## `sfdx pogilvie:query:soql -f <filepath> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+Issue soql query from a file
+
+```
+USAGE
+  $ sfdx pogilvie:query:soql -f <filepath> [-u <string>] [--apiversion <string>] [--json] [--loglevel 
+  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+
+OPTIONS
+  -f, --file=file                                                                   (required) soql file
+
+  -u, --targetusername=targetusername                                               username or alias for the target
+                                                                                    org; overrides default target org
 
   --apiversion=apiversion                                                           override the api version used for
                                                                                     api requests made by this command
@@ -304,12 +364,22 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
-EXAMPLES
-  sfdx hello:org --targetusername myOrg@example.com --targetdevhubusername devhub@org.com
-  sfdx hello:org --name myname --targetusername myOrg@example.com
+EXAMPLE
+  $ sfdx query:soql  -f ./accounts.soql -u my-org-alias
+
+      account.soql:
+      SELECT Id, Name
+      FROM Account
+      WHERE Name like '%Sara%'
+
+      output:
+      ID                 NAME        
+      001S000001LGtY3IAL Sara Account
+      001S000001LGdorIAD Sara Account
+      001S000001LGdowIAD Sara Account
 ```
 
-_See code: [src/commands/pogilvie/org.ts](https://github.com/pogilvie/dx/blob/v0.0.1/src/commands/pogilvie/org.ts)_
+_See code: [src/commands/pogilvie/query/soql.ts](https://github.com/pogilvie/dx/blob/v0.0.1/src/commands/pogilvie/query/soql.ts)_
 
 ## `sfdx pogilvie:ui:call -s <string> -r <string> -p <string> [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
